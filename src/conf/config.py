@@ -1,36 +1,25 @@
 import yaml
+from dataclasses import dataclass, field
+from typing import Dict
 import os
 
+
+@dataclass(frozen=True)
 class Config:
-    def __init__(self, config_path='config.yaml'):
-        self.config_path = config_path
-        self.config_data = self.load_config()
+    data: Dict = field(default_factory=dict)
 
-    def load_config(self):
-        with open(self.config_path, 'r') as file:
+    @classmethod
+    def load(cls, config_path: str = '../config.yaml'):
+        """
+        工厂方法：从配置文件创建Config实例。
+        """
+        if not os.path.exists(config_path):
+            raise FileNotFoundError(f"Config file not found: {config_path}")
+
+        with open(config_path, 'r') as file:
             config_data = yaml.safe_load(file)
-        return config_data
 
-class MongoConfig:
-    def __init__(self, config: Config):
-        self.config = config
+        return cls(data=config_data)
 
-    @property
-    def host(self):
-        return self.config.config_data['mongo']['host']
 
-    @property
-    def port(self):
-        return self.config.config_data['mongo']['port']
-
-    @property
-    def db(self):
-        return self.config.config_data['mongo']['db']
-
-    @property
-    def user(self):
-        return self.config.config_data['mongo']['user']
-
-    @property
-    def password(self):
-        return self.config.config_data['mongo']['password']
+config = Config.load()
