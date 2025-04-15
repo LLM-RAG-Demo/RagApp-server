@@ -4,3 +4,5 @@ fastapi
 pydantic
 bcrypt
 pyyaml
+pymongo
+pymysql
