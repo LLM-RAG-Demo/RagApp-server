@@ -4,7 +4,7 @@ from unittest.mock import patch, MagicMock
 import pymysql
 from pymysql.cursors import DictCursor
 
-from src.utility.mysqlClient import MySQLClient
+from src.dal.mysqlClient import MySQLClient
 from src.conf.config import config
 
 class TestMySQLClient(unittest.TestCase):

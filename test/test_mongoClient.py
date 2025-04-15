@@ -1,7 +1,7 @@
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
-from src.utility.mongoClient import MongoDBClient
+from src.dal.mongoClient import MongoDBClient
 from src.conf.config import config
 
 class TestMongoDBClient(unittest.TestCase):
