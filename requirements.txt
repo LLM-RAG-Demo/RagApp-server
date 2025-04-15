@@ -1,11 +1,5 @@
 # requirements.txt
 langchain
-openai
-numpy
-pandas
-scikit-learn
-flask
 fastapi
-uvicorn
-requests
-pytest
+pydantic
+bcrypt
