@@ -1,6 +1,9 @@
 # requirements.txt
 langchain
+langchain-core
+langchain-deepseek
 fastapi
+uvicorn
 pydantic
 bcrypt
 pyyaml

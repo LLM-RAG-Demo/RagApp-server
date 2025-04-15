@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from src.dal.mongoClient import MongoDBClient
+from src.dal.MongoClient import MongoDBClient
 from src.conf.config import config
 
 class TestMongoDBClient(unittest.TestCase):

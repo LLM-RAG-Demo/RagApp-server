@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from src.dal.redisClient import RedisClient
+from src.dal.RedisClient import RedisClient
 import redis
 from src.conf.config import config
 
