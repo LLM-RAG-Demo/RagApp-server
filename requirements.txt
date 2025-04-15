@@ -3,3 +3,4 @@ langchain
 fastapi
 pydantic
 bcrypt
+pyyaml
