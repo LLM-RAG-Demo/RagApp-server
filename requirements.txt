@@ -7,6 +7,7 @@ uvicorn
 pydantic
 bcrypt
 pyyaml
+DBUtils
 pymongo
 pymysql
 redis
