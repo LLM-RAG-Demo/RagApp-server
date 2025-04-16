@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="$PROJECT_DIR$/.conda" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="$PROJECT_DIR$/.conda" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="uv (RagApp-server)" project-jdk-type="Python SDK" />
 </project>
