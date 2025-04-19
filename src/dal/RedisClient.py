@@ -28,7 +28,6 @@ class RedisClient:
             password=redis_config['password'],
             db=redis_config.get('db', 0),
             max_connections=redis_config.get('max_connections', 10),  # 连接池允许的最大连接数，默认 10
-            min_connections=redis_config.get('min_connections', 5)  # 连接池保持的最小连接数，默认 1
         )
 
     def connect(self):

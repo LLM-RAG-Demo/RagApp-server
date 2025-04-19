@@ -16,5 +16,10 @@ class MongoDBClient:
 
     def _initialize(self):
         mongo_config = config.data['mongo']
-        self.client = MongoClient(mongo_config['host'], mongo_config['port'])
+        self.client = MongoClient(
+            mongo_config['host'],
+            mongo_config['port'],
+            username=mongo_config["username"],
+            password=mongo_config["password"],
+        )
         self.db = self.client[mongo_config['db']]

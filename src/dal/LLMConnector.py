@@ -18,9 +18,9 @@ class LLMConnector:
         return cls._instance
 
     def _initialize(self):
-        self.api_key = config.data['deepseek']['apikey']
-        self.core_num = config.data['deepseek']['coreNum']
-        self.max_num = config.data['deepseek']['maxNum']
+        self.api_key = config.data['deepseek']['api_key']
+        self.core_num = config.data['deepseek']['core_num']
+        self.max_num = config.data['deepseek']['max_num']
         self._llm_queue = Queue()
         self._lock = Lock()
         for _ in range(self.core_num):
