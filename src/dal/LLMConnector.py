@@ -7,7 +7,7 @@ from src.conf.config import config
 
 
 class LLMConnector:
-    _instance : Optional['LLMConnector'] = None
+    _instance: Optional['LLMConnector'] = None
     _llm_queue: Queue
     _lock: Lock
 
@@ -24,16 +24,27 @@ class LLMConnector:
         self._llm_queue = Queue()
         self._lock = Lock()
         for _ in range(self.core_num):
-            llm = ChatDeepSeek(api_key=self.api_key, model='deepseek-chat')
+            # 初始化时就开启 streaming 并配置回调
+            llm = ChatDeepSeek(
+                api_key=self.api_key,
+                model='deepseek-chat',
+                streaming=True,
+            )
             self._llm_queue.put_nowait(llm)
 
     async def get_llm(self) -> ChatDeepSeek:
         async with self._lock:
             if self._llm_queue.empty() and self._llm_queue.qsize() < self.max_num:
-                llm = ChatDeepSeek(api_key=self.api_key, model='deepseek-chat')
+                # 扩容时同样开启 streaming 并配置回调
+                llm = ChatDeepSeek(
+                    api_key=self.api_key,
+                    model='deepseek-chat',
+                    streaming=True,
+                )
                 self._llm_queue.put_nowait(llm)
             return await self._llm_queue.get()
 
     async def release_llm(self, llm: ChatDeepSeek):
         async with self._lock:
             await self._llm_queue.put(llm)
+            

@@ -1,3 +1,4 @@
+import asyncio
 from typing import List
 
 from fastapi import APIRouter
@@ -24,11 +25,19 @@ async def query(request: QueryRequest):
     if request.history is not None:
         kwargs['history'] = request.history
 
-    # async for chunk in rag_service.generate(message, request.conversation_id, **kwargs):
-    #     yield chunk
-    # 使用 StreamingResponse 返回异步生成器
     async def stream():
-        async for chunk in rag_service.generate(message, request.conversation_id, **kwargs):
-            yield chunk
+        # 发送初始心跳，确保连接已建立
+        yield ":\n\n"  # 这是 SSE 的注释格式，客户端会忽略
 
-    return StreamingResponse(stream(), media_type="text/plain")
+        async for chunk in rag_service.generate(message, request.conversation_id, **kwargs):
+            # 确保有空格: "data: "，而不是 "data:"
+            yield f"data: {chunk}\n\n"
+            await asyncio.sleep(0.01)  # 强制让出更长时间
+
+        # 结束时发送一个完成信号
+        yield f"data: [DONE]\n\n"
+
+    return StreamingResponse(
+        stream(),
+        media_type="text/event-stream",
+    )

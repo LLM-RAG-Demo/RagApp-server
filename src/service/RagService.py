@@ -18,6 +18,7 @@ class RagService:
 
     async def generate(self, query: Message, conversation_id: str, **kwargs):
         llm = await self.llm_connector.get_llm()
+        # handler = llm.callbacks[0]
         if conversation_id is None:
             conversation_id = str(next(self.conversation_gen))
         if query.id == 'null':
@@ -38,8 +39,17 @@ class RagService:
 
         response = ''
         async for chunk in llm.astream(messages):
-            response += chunk.content
             yield chunk.content
+            response += chunk.content
+        # task = asyncio.create_task(llm.agenerate([messages]))
+        # async for token in handler.aiter():
+        #     print(token, end='', flush=True)
+        #     response += token
+        #     yield token
+        #     await asyncio.sleep(0)
+        # await task
+
         yield json.dumps({'code': 200, 'conversation_id': conversation_id})
+
         self.conversation_dao.add_message(conversation_id, query)
         self.conversation_dao.add_message(conversation_id, Message(id=str(next(self.message_gen)),role='assistant', content=response))
