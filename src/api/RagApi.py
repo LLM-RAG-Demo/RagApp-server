@@ -5,7 +5,7 @@ from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
-from src.models.message import Message
+from src.pojo.message import Message
 from src.service.RagService import RagService
 
 

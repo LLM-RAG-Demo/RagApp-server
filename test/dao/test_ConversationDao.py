@@ -2,8 +2,8 @@ import pytest
 from unittest.mock import MagicMock, patch
 from datetime import datetime
 from src.dao.ConversationDao import ConversationDao
-from src.models.message import Message
-from src.models.conversation import Conversation
+from src.pojo.message import Message
+from src.pojo.conversation import Conversation
 
 
 @pytest.fixture

@@ -3,7 +3,7 @@ import json
 
 from src.dal.MongoClient import MongoDBClient
 from src.dal.RedisClient import RedisClient
-from src.models.message import Message
+from src.pojo.message import Message
 
 class ConversationDaoError(Exception):
     """ConversationDao 相关操作的自定义异常"""
@@ -38,12 +38,13 @@ class ConversationDao:
                 f"conversation:{conversation_id}",
                 message.model_dump_json()
             )
+            self.redis_client.connection.expire(f"conversation:{conversation_id}", 3600)
             self.redis_client.close()
             return None
         except Exception as e:
             raise ConversationDaoError(f"Error adding message to conversation: {e}") from e
 
-    def get_last_messages(self, conversation_id :str, leng=10, redis=None):
+    def get_last_messages(self, conversation_id :str, leng=10):
         try:
             self.redis_client.connect()
             key = f"conversation:{conversation_id}"
@@ -59,6 +60,7 @@ class ConversationDao:
                 if result:
                     messages = result[0].get("messages", [])
                     self.redis_client.connection.rpush(key, *[json.dumps(msg) for msg in messages])
+                    self.redis_client.connection.expire(key, 3600)
                 else:
                     messages = []
 
