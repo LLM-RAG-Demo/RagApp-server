@@ -3,7 +3,7 @@ from typing import Optional
 import redis
 from redis import ConnectionPool
 
-from src.conf.config import config
+from src.conf import config
 
 
 class RedisClient:

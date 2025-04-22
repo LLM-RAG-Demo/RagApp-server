@@ -3,7 +3,7 @@ from typing import List
 from pydantic import BaseModel
 from datetime import datetime
 
-from src.pojo.message import Message
+from .message import Message
 
 class Conversation(BaseModel):
     id: int

@@ -2,7 +2,7 @@ from typing import Optional
 
 from pymongo import MongoClient
 
-from src.conf.config import config
+from src.conf import config
 
 
 class MongoDBClient:

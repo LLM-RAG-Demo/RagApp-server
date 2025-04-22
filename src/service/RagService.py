@@ -3,9 +3,9 @@ import time
 
 from snowflake import SnowflakeGenerator
 
-from src.dal.LLMConnector import LLMConnector
-from src.dao.ConversationDao import ConversationDao
-from src.pojo.message import Message
+from src.dal import LLMConnector
+from src.dao import ConversationDao
+from src.pojo import Message
 
 from langchain.schema import HumanMessage, AIMessage, SystemMessage
 

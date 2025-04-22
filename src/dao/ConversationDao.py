@@ -1,9 +1,9 @@
 import datetime
 import json
 
-from src.dal.MongoClient import MongoDBClient
-from src.dal.RedisClient import RedisClient
-from src.pojo.message import Message
+from src.dal import MongoDBClient
+from src.dal import RedisClient
+from src.pojo import Message
 
 class ConversationDaoError(Exception):
     """ConversationDao 相关操作的自定义异常"""

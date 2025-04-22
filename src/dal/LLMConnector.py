@@ -3,7 +3,7 @@ from typing import Optional
 
 from langchain_deepseek import ChatDeepSeek
 
-from src.conf.config import config
+from src.conf import config
 
 
 class LLMConnector:
