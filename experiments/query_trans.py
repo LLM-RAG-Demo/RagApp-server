@@ -7,7 +7,7 @@ from langchain_core.output_parsers import JsonOutputParser
 llm = ChatDeepSeek(
     model="deepseek-chat",
     temperature=0.5,
-    api_key='sk-69c9811fc0784c9099acbf6d8b10bfe0'
+    api_key=''
 )
 
 parser = JsonOutputParser()
