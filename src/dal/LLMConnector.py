@@ -1,5 +1,6 @@
 from asyncio import Queue, Lock
-from typing import Optional
+from functools import lru_cache
+from typing import Optional, AsyncGenerator
 
 from langchain_deepseek import ChatDeepSeek
 
@@ -33,18 +34,31 @@ class LLMConnector:
             self._llm_queue.put_nowait(llm)
 
     async def get_llm(self) -> ChatDeepSeek:
-        async with self._lock:
-            if self._llm_queue.empty() and self._llm_queue.qsize() < self.max_num:
-                # 扩容时同样开启 streaming 并配置回调
-                llm = ChatDeepSeek(
-                    api_key=self.api_key,
-                    model='deepseek-chat',
-                    streaming=True,
-                )
-                self._llm_queue.put_nowait(llm)
+        async with self._lock:  # 使用锁保护队列操作
+            if self._llm_queue.empty():
+                if self._active_llms < self.max_num:  # 追踪活跃LLM数量
+                    self._active_llms += 1
+                    llm = ChatDeepSeek(
+                        api_key=self.api_key,
+                        model='deepseek-chat',
+                        streaming=True,
+                    )
+                    return llm
+                else:
+                    # 等待队列中有LLM可用
+                    pass
             return await self._llm_queue.get()
 
     async def release_llm(self, llm: ChatDeepSeek):
         async with self._lock:
             await self._llm_queue.put(llm)
             
+
+async def use_llm() -> AsyncGenerator[ChatDeepSeek, None]:
+    connector = LLMConnector()
+    llm = await connector.get_llm()
+    try:
+        yield llm
+    finally:
+        await connector.release_llm(llm)
+

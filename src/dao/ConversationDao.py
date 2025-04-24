@@ -15,7 +15,7 @@ class ConversationDao:
         self.mongo_client = MongoDBClient()
         self.redis_client = RedisClient()
 
-    def add_message(self, conversation_id :str, message: Message):
+    async def add_message(self, conversation_id :str, message: Message):
         collection = self.mongo_client.db["conversation"]
         try:
             self.redis_client.connect()
@@ -44,7 +44,7 @@ class ConversationDao:
         except Exception as e:
             raise ConversationDaoError(f"Error adding message to conversation: {e}") from e
 
-    def get_last_messages(self, conversation_id :str, leng=10):
+    async def get_last_messages(self, conversation_id :str, leng=10):
         try:
             self.redis_client.connect()
             key = f"conversation:{conversation_id}"
@@ -71,3 +71,7 @@ class ConversationDao:
             return messages
         except Exception as e:
             raise ConversationDaoError(f"Unexpected error: {e}") from e
+
+
+def get_conversation_dao():
+    return ConversationDao()
