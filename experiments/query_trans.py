@@ -4,10 +4,12 @@ from langchain_deepseek import ChatDeepSeek
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 
+from src.conf import config
+
 llm = ChatDeepSeek(
     model="deepseek-chat",
     temperature=0.5,
-    api_key=''
+    api_key=config.data['tongyi']['api_key']
 )
 
 parser = JsonOutputParser()
